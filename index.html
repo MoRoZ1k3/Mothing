@@ -260,16 +260,122 @@
             font-size: 20px;
             opacity: 0.9;
         }
+    
+        /* ===== Mobile responsive tweaks ===== */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                min-height: 100dvh;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: none;
+                padding: 12px 12px 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .sidebar h2 {
+                margin: 0;
+                font-size: 18px;
+                white-space: nowrap;
+            }
+
+            .grade-btn {
+                margin: 0;
+                padding: 10px 14px;
+                font-size: 16px;
+                border-radius: 999px;
+                width: auto;
+                flex: 0 0 auto;
+            }
+
+            .grade-btn:hover {
+                transform: none;
+            }
+
+            .main-content {
+                height: auto;
+                padding: 16px;
+                overflow-y: visible;
+            }
+
+            .welcome-screen h1 {
+                font-size: 28px;
+                line-height: 1.15;
+            }
+
+            .welcome-screen p {
+                font-size: 16px;
+            }
+
+            .topics-list {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .topic-card {
+                padding: 18px;
+            }
+
+            .lesson-view {
+                padding: 16px;
+                margin: 0;
+                border-radius: 16px;
+            }
+
+            .lesson-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .explanation {
+                padding: 14px;
+            }
+
+            .question {
+                padding: 16px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .option-btn, .check-btn {
+                width: 100%;
+            }
+
+            .input-answer {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .sidebar h2 { display: none; }
+            .grade-btn { padding: 10px 12px; font-size: 15px; }
+        }
+
     </style>
 </head>
 <body>
     <div class="sidebar">
         <h2>📚 Классы</h2>
-        <button class="grade-btn" onclick="selectGrade(1)">1 класс</button>
-        <button class="grade-btn" onclick="selectGrade(2)">2 класс</button>
-        <button class="grade-btn" onclick="selectGrade(3)">3 класс</button>
-        <button class="grade-btn" onclick="selectGrade(4)">4 класс</button>
-        <button class="grade-btn" onclick="selectGrade(5)">5 класс</button>
+        <button class="grade-btn" onclick="selectGrade(1, event)">1 класс</button>
+        <button class="grade-btn" onclick="selectGrade(2, event)">2 класс</button>
+        <button class="grade-btn" onclick="selectGrade(3, event)">3 класс</button>
+        <button class="grade-btn" onclick="selectGrade(4, event)">4 класс</button>
+        <button class="grade-btn" onclick="selectGrade(5, event)">5 класс</button>
     </div>
 
     <div class="main-content">
@@ -3175,10 +3281,11 @@
         let currentTopic = null;
         let currentQuestionIndex = 0;
 
-        function selectGrade(grade) {
+        function selectGrade(grade, evt) {
             currentGrade = grade;
             document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            const e = evt || window.event;
+            if (e && e.target) e.target.classList.add('active');
             
             document.getElementById('welcome').style.display = 'none';
             document.getElementById('topics-container').style.display = 'block';
